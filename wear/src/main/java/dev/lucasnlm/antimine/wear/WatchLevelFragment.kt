@@ -2,7 +2,6 @@ package dev.lucasnlm.antimine.wear
 
 import android.os.Bundle
 import android.text.format.DateUtils
-import android.view.DisplayCutout
 import android.view.View
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint

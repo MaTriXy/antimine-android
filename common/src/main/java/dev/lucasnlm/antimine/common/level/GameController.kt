@@ -66,7 +66,14 @@ class GameController {
         field = (0 until fieldSize).map { index ->
             val yPosition = floor((index / width).toDouble()).toInt()
             val xPosition = (index % width)
-            Area(index, xPosition, yPosition)
+            val enabled = when (yPosition) {
+                0 -> (xPosition > 1 && xPosition < width - 2)
+                1 -> (xPosition > 0 && xPosition < width - 1)
+                height - 1 -> (xPosition > 1 && xPosition < width - 2)
+                height - 2 -> (xPosition > 0 && xPosition < width - 1)
+                else -> true
+            }
+            Area(id = index, posX = xPosition, posY = yPosition, enabled = enabled)
         }.asSequence()
     }
 
