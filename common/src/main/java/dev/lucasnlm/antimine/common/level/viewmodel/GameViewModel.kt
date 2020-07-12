@@ -22,6 +22,7 @@ import dev.lucasnlm.antimine.core.analytics.AnalyticsManager
 import dev.lucasnlm.antimine.core.analytics.models.Analytics
 import dev.lucasnlm.antimine.core.control.ActionResponse
 import dev.lucasnlm.antimine.core.control.ActionFeedback
+import dev.lucasnlm.antimine.core.control.ControlStyle
 import dev.lucasnlm.antimine.core.control.GameControl
 import dev.lucasnlm.antimine.core.preferences.IPreferencesRepository
 import dev.lucasnlm.antimine.core.sound.ISoundManager
@@ -68,7 +69,7 @@ class GameViewModel @ViewModelInject constructor(
         )
 
         gameController = GameController(minefield, minefieldRepository.randomSeed())
-        refreshUserPreferences()
+        useUserPreferences()
 
         mineCount.postValue(minefield.mines)
         difficulty.postValue(newDifficulty)
@@ -94,7 +95,7 @@ class GameViewModel @ViewModelInject constructor(
 
         val setup = save.minefield
         gameController = GameController(save)
-        refreshUserPreferences()
+        useUserPreferences()
 
         mineCount.postValue(setup.mines)
         difficulty.postValue(save.difficulty)
@@ -125,7 +126,7 @@ class GameViewModel @ViewModelInject constructor(
                 singleClick(save.firstOpen.value)
             }
         }
-        refreshUserPreferences()
+        useUserPreferences()
 
         mineCount.postValue(setup.mines)
         difficulty.postValue(save.difficulty)
@@ -303,12 +304,20 @@ class GameViewModel @ViewModelInject constructor(
         }
     }
 
-    fun refreshUserPreferences() {
+    fun useUserPreferences() {
         val questionMark = preferencesRepository.useQuestionMark()
         val controlType = preferencesRepository.controlStyle()
         val gameControl = GameControl.fromControlType(controlType)
         gameController.apply {
             updateGameControl(gameControl)
+            useQuestionMark(questionMark)
+        }
+    }
+
+    fun useCustomPreferences(questionMark: Boolean, controlStyle: ControlStyle) {
+        preferencesRepository.useControlStyle(controlStyle)
+        gameController.apply {
+            updateGameControl(GameControl.fromControlType(controlStyle))
             useQuestionMark(questionMark)
         }
     }

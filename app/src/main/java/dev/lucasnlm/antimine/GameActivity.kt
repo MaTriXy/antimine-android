@@ -187,7 +187,7 @@ class GameActivity : AppCompatActivity(), DialogInterface.OnDismissListener {
         if (!willReset) {
             if (status == Status.Running) {
                 viewModel.run {
-                    refreshUserPreferences()
+                    useUserPreferences()
                     resumeGame()
                 }
 
@@ -621,7 +621,7 @@ class GameActivity : AppCompatActivity(), DialogInterface.OnDismissListener {
 
     override fun onDismiss(dialog: DialogInterface?) {
         viewModel.run {
-            refreshUserPreferences()
+            useUserPreferences()
             resumeGame()
         }
     }
